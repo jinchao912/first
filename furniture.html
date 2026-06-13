@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>木栖 MUQI — 为生活做一件好家具</title>
+<style>
+  :root{
+    --wood-900:#2a1f17;
+    --wood-700:#4a3524;
+    --wood-500:#8a6a4f;
+    --wood-300:#c8ad8a;
+    --cream:#f3ece0;
+    --paper:#faf6ef;
+    --ink:#2a1f17;
+    --line:#d9cebc;
+    --accent:#b4632c;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+    color:var(--ink);
+    background:var(--paper);
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  .serif{font-family:"Noto Serif SC","Songti SC",Georgia,serif;font-weight:500;letter-spacing:.02em}
+
+  /* Nav */
+  nav{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    padding:18px 48px;display:flex;justify-content:space-between;align-items:center;
+    background:rgba(250,246,239,.85);backdrop-filter:blur(12px);
+    border-bottom:1px solid transparent;transition:all .3s;
+  }
+  nav.scrolled{border-bottom-color:var(--line)}
+  .logo{font-size:22px;letter-spacing:.3em}
+  .nav-links{display:flex;gap:36px;list-style:none}
+  .nav-links a{font-size:14px;color:var(--ink);text-decoration:none;transition:color .2s}
+  .nav-links a:hover{color:var(--accent)}
+  .nav-cta{
+    padding:10px 22px;border:1px solid var(--wood-700);
+    font-size:13px;letter-spacing:.15em;cursor:pointer;background:transparent;
+    color:var(--ink);transition:all .25s;
+  }
+  .nav-cta:hover{background:var(--wood-700);color:var(--paper)}
+
+  /* Hero */
+  .hero{
+    height:100vh;min-height:680px;display:grid;
+    grid-template-columns:1.2fr 1fr;align-items:stretch;
+    padding-top:70px;
+  }
+  .hero-text{
+    padding:80px 64px;display:flex;flex-direction:column;justify-content:center;
+    background:var(--cream);
+  }
+  .eyebrow{font-size:12px;letter-spacing:.4em;color:var(--wood-500);margin-bottom:28px}
+  .hero h1{
+    font-size:68px;line-height:1.15;color:var(--wood-900);margin-bottom:36px;
+  }
+  .hero h1 em{font-style:normal;color:var(--accent);font-family:"Noto Serif SC",serif}
+  .hero p{font-size:16px;color:var(--wood-700);max-width:420px;margin-bottom:44px}
+  .hero-btns{display:flex;gap:16px}
+  .btn{
+    padding:16px 34px;font-size:14px;letter-spacing:.15em;cursor:pointer;
+    transition:all .25s;text-decoration:none;display:inline-block;
+  }
+  .btn-primary{background:var(--wood-900);color:var(--paper);border:1px solid var(--wood-900)}
+  .btn-primary:hover{background:var(--accent);border-color:var(--accent)}
+  .btn-ghost{background:transparent;color:var(--ink);border:1px solid var(--wood-700)}
+  .btn-ghost:hover{background:var(--wood-700);color:var(--paper)}
+  .hero-visual{
+    position:relative;background:
+      linear-gradient(135deg,rgba(42,31,23,.88),rgba(74,53,36,.7)),
+      url('https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1400&q=80') center/cover;
+    display:flex;align-items:flex-end;padding:60px;color:var(--paper);
+  }
+  .hero-meta{
+    display:flex;gap:40px;padding-top:30px;border-top:1px solid rgba(255,255,255,.25);
+  }
+  .hero-meta div{flex:1}
+  .hero-meta .num{font-size:36px;font-family:Georgia,serif;line-height:1}
+  .hero-meta .lbl{font-size:12px;letter-spacing:.25em;opacity:.7;margin-top:8px}
+
+  /* Sections */
+  section{padding:120px 48px}
+  .section-head{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:60px}
+  .section-head h2{font-size:44px;line-height:1.2;color:var(--wood-900);max-width:520px}
+  .section-head .sub{font-size:14px;color:var(--wood-500);letter-spacing:.1em;max-width:300px;text-align:right}
+
+  /* Category */
+  .categories{background:var(--cream)}
+  .cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+  .cat-card{
+    background:var(--paper);padding:40px 28px;cursor:pointer;
+    border:1px solid var(--line);transition:all .3s;
+    display:flex;flex-direction:column;align-items:flex-start;
+  }
+  .cat-card:hover{background:var(--wood-900);color:var(--paper);transform:translateY(-4px);border-color:var(--wood-900)}
+  .cat-icon{font-size:38px;margin-bottom:24px}
+  .cat-card h3{font-size:22px;margin-bottom:10px}
+  .cat-card p{font-size:13px;opacity:.75;line-height:1.6}
+  .cat-card .arrow{margin-top:auto;padding-top:24px;font-size:14px;letter-spacing:.2em;opacity:.6}
+
+  /* Products */
+  .products{background:var(--paper)}
+  .filters{display:flex;gap:10px;margin-bottom:50px;flex-wrap:wrap}
+  .filter-btn{
+    padding:10px 22px;background:transparent;border:1px solid var(--line);
+    font-size:13px;letter-spacing:.1em;cursor:pointer;color:var(--ink);
+    transition:all .2s;
+  }
+  .filter-btn:hover{border-color:var(--wood-700)}
+  .filter-btn.active{background:var(--wood-900);color:var(--paper);border-color:var(--wood-900)}
+  .product-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px}
+  .product{
+    cursor:pointer;transition:transform .3s;
+  }
+  .product:hover{transform:translateY(-6px)}
+  .product-img{
+    aspect-ratio:4/5;background:var(--cream) center/cover;margin-bottom:20px;
+    position:relative;overflow:hidden;
+  }
+  .product-img::after{
+    content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 60%,rgba(42,31,23,.15));
+    opacity:0;transition:opacity .3s;
+  }
+  .product:hover .product-img::after{opacity:1}
+  .product-info{display:flex;justify-content:space-between;align-items:baseline}
+  .product-info h3{font-size:18px;font-family:"Noto Serif SC",serif}
+  .product-info .price{font-size:16px;color:var(--wood-500);font-family:Georgia,serif}
+  .product .tag{font-size:12px;color:var(--wood-500);letter-spacing:.15em;margin-top:6px}
+  .product.hidden{display:none}
+
+  /* Story */
+  .story{background:var(--wood-900);color:var(--cream);
+    display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+  .story-img{
+    aspect-ratio:4/5;background:
+      url('https://images.unsplash.com/photo-1540574163026-643ea20ade25?w=1200&q=80') center/cover;
+  }
+  .story h2{font-size:44px;line-height:1.25;margin-bottom:32px}
+  .story .lead{font-size:17px;color:var(--wood-300);margin-bottom:28px;line-height:1.9}
+  .story p{font-size:14px;color:rgba(243,236,224,.7);line-height:1.9;margin-bottom:20px}
+  .story .btn{margin-top:20px;border-color:var(--cream);color:var(--cream)}
+  .story .btn:hover{background:var(--cream);color:var(--wood-900)}
+
+  /* Testimonials */
+  .testi{background:var(--cream);text-align:center}
+  .testi h2{font-size:44px;margin-bottom:60px;color:var(--wood-900)}
+  .testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:32px;text-align:left}
+  .testi-card{
+    background:var(--paper);padding:40px;border:1px solid var(--line);
+  }
+  .testi-card .quote{font-size:48px;line-height:.8;color:var(--accent);font-family:Georgia,serif;margin-bottom:20px}
+  .testi-card p{font-size:14px;color:var(--wood-700);line-height:1.8;margin-bottom:28px}
+  .testi-card .author{font-size:14px;font-family:"Noto Serif SC",serif;border-top:1px solid var(--line);padding-top:20px}
+  .testi-card .author small{display:block;font-size:12px;color:var(--wood-500);margin-top:4px;letter-spacing:.1em}
+
+  /* CTA */
+  .cta{
+    background:
+      linear-gradient(rgba(42,31,23,.7),rgba(42,31,23,.7)),
+      url('https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1600&q=80') center/cover;
+    color:var(--paper);text-align:center;padding:160px 48px;
+  }
+  .cta h2{font-size:52px;margin-bottom:20px}
+  .cta p{font-size:16px;opacity:.8;max-width:520px;margin:0 auto 40px}
+  .cta .btn{background:var(--accent);border-color:var(--accent);color:#fff}
+  .cta .btn:hover{background:var(--paper);color:var(--wood-900);border-color:var(--paper)}
+
+  /* Footer */
+  footer{background:var(--wood-900);color:var(--cream);padding:80px 48px 40px}
+  .foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:60px;margin-bottom:60px}
+  .foot-grid h4{font-size:14px;letter-spacing:.25em;margin-bottom:24px;color:var(--wood-300)}
+  .foot-grid p, .foot-grid a{font-size:14px;color:rgba(243,236,224,.7);line-height:2;text-decoration:none;display:block}
+  .foot-grid a:hover{color:var(--cream)}
+  .foot-grid .big{font-size:28px;margin-bottom:20px;color:var(--cream);letter-spacing:.2em}
+  .foot-bottom{border-top:1px solid rgba(243,236,224,.15);padding-top:30px;display:flex;justify-content:space-between;font-size:12px;color:var(--wood-300);letter-spacing:.1em}
+
+  /* Reveal animation */
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .8s,transform .8s}
+  .reveal.in{opacity:1;transform:none}
+
+  @media(max-width:1024px){
+    .hero{grid-template-columns:1fr;height:auto}
+    .hero-text{padding:60px 32px}
+    .hero h1{font-size:48px}
+    .hero-visual{min-height:400px}
+    .cat-grid,.product-grid,.testi-grid{grid-template-columns:repeat(2,1fr)}
+    .story{grid-template-columns:1fr;gap:40px}
+    .foot-grid{grid-template-columns:1fr 1fr;gap:40px}
+    section{padding:80px 32px}
+    .section-head{flex-direction:column;align-items:flex-start;gap:20px}
+    .section-head .sub{text-align:left}
+    .section-head h2,.story h2,.testi h2,.cta h2{font-size:32px}
+    nav{padding:14px 24px}
+    .nav-links{display:none}
+  }
+  @media(max-width:640px){
+    .cat-grid,.product-grid,.testi-grid{grid-template-columns:1fr}
+    .hero-meta{flex-wrap:wrap;gap:24px}
+    .foot-grid{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="logo serif">木栖 · MUQI</div>
+  <ul class="nav-links">
+    <li><a href="#products">产品</a></li>
+    <li><a href="#categories">系列</a></li>
+    <li><a href="#story">故事</a></li>
+    <li><a href="#cta">联系</a></li>
+  </ul>
+  <button class="nav-cta">预约到店</button>
+</nav>
+
+<section class="hero">
+  <div class="hero-text">
+    <div class="eyebrow">SINCE 2014 · HANDMADE FURNITURE</div>
+    <h1 class="serif">在木头里，<br>寻找一种<em>慢</em>的生活</h1>
+    <p>每一件木栖家具，都由老师傅手工打磨，选用北美黑胡桃、白橡与樱桃木，让家拥有时间的温度。</p>
+    <div class="hero-btns">
+      <a href="#products" class="btn btn-primary">浏览产品</a>
+      <a href="#story" class="btn btn-ghost">我们的故事</a>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="hero-meta">
+      <div><div class="num">11</div><div class="lbl">YEARS</div></div>
+      <div><div class="num">2800+</div><div class="lbl">HOUSEHOLDS</div></div>
+      <div><div class="num">36</div><div class="lbl">ARTISANS</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="categories" id="categories">
+  <div class="section-head reveal">
+    <h2 class="serif">按你的空间，<br>选一件合适的家具</h2>
+    <div class="sub">CATEGORIES —— 客厅 / 餐厅 / 卧房 / 书房</div>
+  </div>
+  <div class="cat-grid">
+    <div class="cat-card reveal">
+      <div class="cat-icon">🛋</div>
+      <h3 class="serif">客厅系列</h3>
+      <p>茶几、电视柜、沙发边几，让客厅成为家的中心。</p>
+      <div class="arrow">查看 →</div>
+    </div>
+    <div class="cat-card reveal">
+      <div class="cat-icon">🍽</div>
+      <h3 class="serif">餐厅系列</h3>
+      <p>长桌、圆桌、餐椅，与家人朋友共度每一餐。</p>
+      <div class="arrow">查看 →</div>
+    </div>
+    <div class="cat-card reveal">
+      <div class="cat-icon">🛏</div>
+      <h3 class="serif">卧房系列</h3>
+      <p>床架、衣柜、床头柜，安放一整天的疲惫。</p>
+      <div class="arrow">查看 →</div>
+    </div>
+    <div class="cat-card reveal">
+      <div class="cat-icon">📚</div>
+      <h3 class="serif">书房系列</h3>
+      <p>书桌、书架、座椅，为专注与思考留出空间。</p>
+      <div class="arrow">查看 →</div>
+    </div>
+  </div>
+</section>
+
+<section class="products" id="products">
+  <div class="section-head reveal">
+    <h2 class="serif">精选 · 当季新品</h2>
+    <div class="sub">NEW ARRIVALS —— 2026 SPRING</div>
+  </div>
+  <div class="filters reveal">
+    <button class="filter-btn active" data-filter="all">全部</button>
+    <button class="filter-btn" data-filter="living">客厅</button>
+    <button class="filter-btn" data-filter="dining">餐厅</button>
+    <button class="filter-btn" data-filter="bedroom">卧房</button>
+    <button class="filter-btn" data-filter="study">书房</button>
+  </div>
+  <div class="product-grid">
+    <article class="product reveal" data-cat="living">
+      <div class="product-img" style="background-image:url('https://images.unsplash.com/photo-1538688516-d9447a83f554?w=800&q=80')"></div>
+      <div class="product-info"><h3>长坂茶几</h3><span class="price">¥ 3,880</span></div>
+      <div class="tag">黑胡桃木 · 客厅</div>
+    </article>
+    <article class="product reveal" data-cat="dining">
+      <div class="product-img" style="background-image:url('https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=800&q=80')"></div>
+      <div class="product-info"><h3>川流长桌</h3><span class="price">¥ 8,600</span></div>
+      <div class="tag">白橡木 · 餐厅</div>
+    </article>
+    <article class="product reveal" data-cat="bedroom">
+      <div class="product-img" style="background-image:url('https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=800&q=80')"></div>
+      <div class="product-info"><h3>归云床架</h3><span class="price">¥ 12,400</span></div>
+      <div class="tag">樱桃木 · 卧房</div>
+    </article>
+    <article class="product reveal" data-cat="study">
+      <div class="product-img" style="background-image:url('https://images.unsplash.com/photo-1519710164239-da123dc03ef4?w=800&q=80')"></div>
+      <div class="product-info"><h3>静读书桌</h3><span class="price">¥ 5,280</span></div>
+      <div class="tag">黑胡桃木 · 书房</div>
+    </article>
+    <article class="product reveal" data-cat="living">
+      <div class="product-img" style="background-image:url('https://images.unsplash.com/photo-1540932239986-301182b40a22?w=800&q=80')"></div>
+      <div class="product-info"><h3>松影电视柜</h3><span class="price">¥ 6,200</span></div>
+      <div class="tag">白橡木 · 客厅</div>
+    </article>
+    <article class="product reveal" data-cat="dining">
+      <div class="product-img" style="background-image:url('https://images.unsplash.com/photo-1503602642458-2321d1f876ea?w=800&q=80')"></div>
+      <div class="product-info"><h3>围坐餐椅</h3><span class="price">¥ 1,680</span></div>
+      <div class="tag">樱桃木 · 餐厅</div>
+    </article>
+  </div>
+</section>
+
+<section class="story" id="story">
+  <div class="story-img reveal"></div>
+  <div class="reveal">
+    <div class="eyebrow" style="color:var(--wood-300)">OUR STORY</div>
+    <h2 class="serif">十一个冬天，<br>我们只做一件事——<br>把木头变成家。</h2>
+    <p class="lead">在浙江丽水的老厂房里，三十六位木工师傅每天早晨八点开始打磨。他们中的大多数人，已经与木头相处超过三十年。</p>
+    <p>我们坚持使用 FSC 认证的北美硬木，榫卯结构替代铁钉，天然植物木蜡油替代漆料。一件家具从原木到成品，平均经过五十八天。</p>
+    <p>慢一点，没关系——因为它要陪你很久。</p>
+    <a href="#cta" class="btn btn-ghost">了解更多</a>
+  </div>
+</section>
+
+<section class="testi">
+  <h2 class="serif reveal">住进木栖的人，这样说</h2>
+  <div class="testi-grid">
+    <div class="testi-card reveal">
+      <div class="quote">"</div>
+      <p>搬进来的那天，整个家都带着淡淡的胡桃木香，像住进了一间森林小屋。</p>
+      <div class="author serif">林小姐<small>杭州 · 2023</small></div>
+    </div>
+    <div class="testi-card reveal">
+      <div class="quote">"</div>
+      <p>三年前买的长桌，现在每一条木纹都更有味道。家具真的是越用越好看。</p>
+      <div class="author serif">陈先生<small>上海 · 2022</small></div>
+    </div>
+    <div class="testi-card reveal">
+      <div class="quote">"</div>
+      <p>师傅上门安装时，给我讲了每一块木头的故事。这是第一次买家具被感动。</p>
+      <div class="author serif">苏女士<small>北京 · 2024</small></div>
+    </div>
+  </div>
+</section>
+
+<section class="cta" id="cta">
+  <h2 class="serif reveal">让我们为你做一件<br>适合你的家具</h2>
+  <p class="reveal">预约门店参观，或让设计师上门测量——无论你住在哪个城市，我们都可以。</p>
+  <a href="#" class="btn reveal">预约体验</a>
+</section>
+
+<footer>
+  <div class="foot-grid">
+    <div>
+      <div class="big serif">木栖 · MUQI</div>
+      <p>为生活做一件好家具。<br>浙江省丽水市莲都区老厂房路 23 号</p>
+    </div>
+    <div>
+      <h4>PRODUCTS</h4>
+      <a href="#">客厅</a><a href="#">餐厅</a><a href="#">卧房</a><a href="#">书房</a>
+    </div>
+    <div>
+      <h4>COMPANY</h4>
+      <a href="#">品牌故事</a><a href="#">工坊参观</a><a href="#">环保承诺</a><a href="#">新闻</a>
+    </div>
+    <div>
+      <h4>CONTACT</h4>
+      <a href="#">400-123-6688</a><a href="#">hello@muqi.cn</a><a href="#">微信 · 微博</a><a href="#">小红书</a>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>© 2026 MUQI FURNITURE · ALL RIGHTS RESERVED</span>
+    <span>DESIGNED IN LISHUI</span>
+  </div>
+</footer>
+
+<script>
+  // Nav scroll state
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll',()=>{
+    nav.classList.toggle('scrolled', window.scrollY>20);
+  });
+
+  // Product filter
+  document.querySelectorAll('.filter-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      const f = btn.dataset.filter;
+      document.querySelectorAll('.product').forEach(p=>{
+        if(f==='all'||p.dataset.cat===f) p.classList.remove('hidden');
+        else p.classList.add('hidden');
+      });
+    });
+  });
+
+  // Reveal on scroll
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  },{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+
+</body>
+</html>
